@@ -11,7 +11,7 @@ for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; d
     --output="logs/train_mt_${SIGNATURE}.log" \
     --wrap="CUDA_VISIBLE_DEVICES=0 fairseq-train \
         ${TEXT_DIR} \
-        --arch transformer_wmt_en_de_big --share-all-embeddings \
+        --arch transformer_wmt_en_de --share-all-embeddings \
         --dropout 0.3 --weight-decay 0.0 \
         --log-interval 2000 \
         --criterion label_smoothed_cross_entropy --label-smoothing 0.1 \
@@ -28,7 +28,8 @@ for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; d
         --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
         --seed 0 \
         --save-dir $CHECKPOINT_DIR \
-        --amp \
     "
 done;
 
+
+    # --amp \
