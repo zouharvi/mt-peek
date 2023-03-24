@@ -1,8 +1,9 @@
 #!/usr/bin/bash
 
+for PEEK_TYPE in "fully_random" "ordered_random"; do
 for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; do
-    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/r${RATE}";
-    SIGNATURE="ende_s0_r${RATE}"
+    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/${PEEK_TYPE}/r${RATE}";
+    SIGNATURE="ende_s0_${PEEK_TYPE}_r${RATE}"
     CHECKPOINT_DIR="checkpoints/${SIGNATURE}"
     mkdir -p ${CHECKPOINT_DIR}
 
@@ -30,6 +31,6 @@ for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; d
         --save-dir $CHECKPOINT_DIR \
     "
 done;
-
+done;
 
     # --amp \
