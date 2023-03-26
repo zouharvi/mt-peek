@@ -10,9 +10,13 @@ import fig_utils
 
 data = []
 for file in glob.glob("logs/train_mt_ende_s0_*.log"):
-    lines = [l.rstrip()
-             for l in open(file, "r").readlines() if "best_bleu " in l]
+    lines = [
+        l.rstrip()
+        for l in open(file, "r").readlines()
+        if "best_bleu " in l
+    ]
     if not lines:
+        print(file)
         best_bleu = 0
     else:
         best_bleu = float(lines[-1].split("best_bleu ")[-1])
@@ -35,17 +39,18 @@ def plot_bars(data_local, label, offset, style):
         [x + offset for x in range(len(data_local))],
         [x[2] for x in data_local],
         label=label,
-        width=0.3,
-        linewidth=2,
+        width=0.33,
+        linewidth=1.2,
         **style
     )
+
 
 plt.figure(figsize=(3.5, 2.5))
 
 plot_bars(
     [x for x in data if x[0] == "fully_random"],
     "fully random",
-    offset=-0.15,
+    offset=-0.20,
     style={"color": "white", "hatch": "\\", "edgecolor": "black"}
 
 )
@@ -53,8 +58,8 @@ plot_bars(
 plot_bars(
     [x for x in data if x[0] == "ordered_random"],
     "ordered random",
-    offset=0.15,
-    style={"color": "black", "hatch": "/", "edgecolor": "black"},
+    offset=0.20,
+    style={"color": "black", "edgecolor": "black"},
 )
 
 rates = [x[1] for x in data if x[0] == "ordered_random"]
@@ -68,6 +73,6 @@ plt.xlabel("\% of words in reference accessed")
 plt.ylabel("BLEU score")
 
 plt.legend()
-plt.tight_layout(pad=0.2)
+plt.tight_layout(pad=0.1)
 plt.savefig("computed/yapok.pdf")
 plt.show()
