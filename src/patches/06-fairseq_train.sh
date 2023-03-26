@@ -1,5 +1,8 @@
 #!/usr/bin/bash
 
+LANG1="de"
+LANG2="en"
+
 for PEEK_TYPE in "fully_random" "ordered_random"; do
 for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; do
     TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/${PEEK_TYPE}/r${RATE}";
