@@ -50,7 +50,7 @@ plt.figure(figsize=(3.5, 2.5))
 plot_bars(
     [x for x in data if x[0] == "fully_random"],
     "fully random",
-    offset=-0.20,
+    offset=-0.19,
     style={"color": "white", "hatch": "\\", "edgecolor": "black"}
 
 )
@@ -58,7 +58,7 @@ plot_bars(
 plot_bars(
     [x for x in data if x[0] == "ordered_random"],
     "ordered random",
-    offset=0.20,
+    offset=0.19,
     style={"color": "black", "edgecolor": "black"},
 )
 
