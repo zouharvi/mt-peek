@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 
-import sys
-sys.path.append("src")
 import glob
 import matplotlib.pyplot as plt
-import fig_utils
+import jezecek.fig_utils
 
 # rsync -azP euler:/cluster/work/sachan/vilem/mt-peek/logs/train_mt_ende_s0_*.log logs/
 
