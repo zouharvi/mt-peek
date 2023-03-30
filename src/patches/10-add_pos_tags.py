@@ -56,7 +56,7 @@ for split in SPLITs:
 
         for pos in POSs:
             fouts_en[pos][split].write(line_en)
-            fouts_de[pos][split].write(f"{artefact_pos[pos]} [SEP] {line_en}")
+            fouts_de[pos][split].write(f"{artefact_pos[pos]} [SEP] {line_de}")
         
         pos_counter.update([p for w,p in sent_pos])
     if split == "dev":

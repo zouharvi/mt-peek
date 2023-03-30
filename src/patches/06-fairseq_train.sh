@@ -3,18 +3,17 @@
 LANG1="de"
 LANG2="en"
 
-for PEEK_TYPE in "fully_random" "ordered_random"; do
-for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; do
-    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/${PEEK_TYPE}/r${RATE}";
-    SIGNATURE="ende_s0_${PEEK_TYPE}_r${RATE}"
+function launch_mt_train() {
+    # signature, text dir
+    echo "Launching ${1} ${2} ${3}"
     CHECKPOINT_DIR="checkpoints/${SIGNATURE}"
     mkdir -p ${CHECKPOINT_DIR}
 
     sbatch --time=07-00 --ntasks=8 --mem-per-cpu=4G --gpus=1 \
-    --job-name="train_mt_${SIGNATURE}" \
-    --output="logs/train_mt_${SIGNATURE}.log" \
+    --job-name="train_mt_${1}" \
+    --output="logs/train_mt_${1}.log" \
     --wrap="CUDA_VISIBLE_DEVICES=0 fairseq-train \
-        ${TEXT_DIR} \
+        ${2} \
         --arch transformer_wmt_en_de --share-all-embeddings \
         --dropout 0.3 --weight-decay 0.0 \
         --log-interval 2000 \
@@ -31,9 +30,31 @@ for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; d
         --eval-bleu-print-samples \
         --best-checkpoint-metric bleu --maximize-best-checkpoint-metric \
         --seed 0 \
-        --save-dir $CHECKPOINT_DIR \
+        --save-dir ${CHECKPOINT_DIR} \
+        --keep-last-epochs 1 \
     "
+}
+
+for PEEK_TYPE in "fully_random" "ordered_random"; do
+for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; do
+    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/${PEEK_TYPE}/r${RATE}";
+    SIGNATURE="ende_s0_${PEEK_TYPE}_r${RATE}"
+    launch_mt_train $SIGNATURE $TEXT_DIR
 done;
 done;
 
-    # --amp \
+
+for COUNT_TYPE in "words" "subwords"; do
+    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/token_count/${COUNT_TYPE}";
+    SIGNATURE="ende_s0_token_count_${COUNT_TYPE}"
+    
+    launch_mt_train $SIGNATURE $TEXT_DIR
+done;
+
+
+for POS in "VERB" "NOUN" "PRON" "ADJ" "ADV" "ADP" "CONJ" "DET" "NUM" "PRT" "X" "."; do
+    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/pos/${POS}";
+    SIGNATURE="ende_s0_pos_${POS}"
+    
+    launch_mt_train $SIGNATURE $TEXT_DIR
+done;
