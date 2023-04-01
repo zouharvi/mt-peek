@@ -3,11 +3,15 @@
 import glob
 import matplotlib.pyplot as plt
 import jezecek.fig_utils
+import numpy as np
 
 # rsync -azP euler:/cluster/work/sachan/vilem/mt-peek/logs/train_mt_ende_s0_*.log logs/
 
 data = []
 for file in glob.glob("logs/train_mt_ende_s0_*.log"):
+    if "train_mt_ende_s0_r" not in file and "train_mt_ende_s0_ordered_random_r" not in file:
+        continue
+
     lines = [
         l.rstrip()
         for l in open(file, "r").readlines()
@@ -45,17 +49,20 @@ def plot_bars(data_local, label, offset, style):
 
 plt.figure(figsize=(3.5, 2.5))
 
+data_ordered_random = [x for x in data if x[0] == "ordered_random"]
+data_fully_random = [x for x in data if x[0] == "fully_random"]
+
 plot_bars(
-    [x for x in data if x[0] == "fully_random"],
-    "fully random",
+    data_fully_random,
+    "Fully random",
     offset=-0.19,
     style={"color": "white", "hatch": "\\", "edgecolor": "black"}
 
 )
 
 plot_bars(
-    [x for x in data if x[0] == "ordered_random"],
-    "ordered random",
+    data_ordered_random,
+    "Ordered random",
     offset=0.19,
     style={"color": "black", "edgecolor": "black"},
 )
@@ -74,3 +81,18 @@ plt.legend()
 plt.tight_layout(pad=0.1)
 plt.savefig("computed/yapok.pdf")
 plt.show()
+
+baseline_bleu = 39.94
+for rate, bleu_fully, bleu_ordered in zip(rates, data_fully_random,data_ordered_random):
+    fdev = [x.split(" [SEP]")[0] for x in open(f"data/peek/r{rate:0>3}/dev.de", "r")]
+    avg_tokens = np.average([x.count(" ")+1 if x else 0 for x in fdev])
+    print(
+        f"{rate}\\%",
+        f"{avg_tokens:.2f}",
+        f"{bleu_fully[2]:.2f}",
+        f"{(bleu_fully[2]-baseline_bleu)/avg_tokens:.2f}",
+        f"{bleu_ordered[2]:.2f}",
+        f"{(bleu_ordered[2]-baseline_bleu)/avg_tokens:.2f}",
+        sep=" & ",
+        end="\\\\\n"
+    )
