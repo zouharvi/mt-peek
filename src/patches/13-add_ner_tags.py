@@ -37,9 +37,11 @@ NERs = {
     "ALL": "ALL",
 }
 
-# "PERSON" "NORP" "FAC" "ORG" "GPE" "LOC" "PRODUCT" "EVENT" "WORK_OF_ART" "LAW" "LANGUAGE" "DATE" "TIME" "PERCENT" "MONEY" "QUANTITY" "ORDINAL" "CARDINAL"
-print(' '.join([f'"{k}"' for k in NERs]))
+NERVs = list(set(NERs.values()))
 
+
+# "NUM" "ORG" "NORP" "GPE" "ALL" "DATE"
+print(' '.join([f'"{x}"' for x in NERVs]))
 
 def get_ner(string):
     doc = nlp(string)
@@ -49,7 +51,7 @@ def get_ner(string):
 
 SPLITs = ["dev", "test", "train"]
 
-for ner in NERs:
+for ner in NERVs:
     os.makedirs(f"data/peek/ner/{ner}/", exist_ok=True)
     os.makedirs(f"data/peek_bped/ner/{ner}/", exist_ok=True)
 
@@ -58,14 +60,14 @@ fouts_en = {
         split: open(f"data/peek/ner/{ner}/{split}.en", "w")
         for split in SPLITs
     }
-    for ner in NERs
+    for ner in NERVs
 }
 fouts_de = {
     ner: {
         split: open(f"data/peek/ner/{ner}/{split}.de", "w")
         for split in SPLITs
     }
-    for ner in NERs
+    for ner in NERVs
 }
 
 import collections
@@ -88,14 +90,17 @@ for split in SPLITs:
             break
         sent_ner = get_ner(line_en)
         artefact_ner = {
-            ner: " ".join([w for w, p in sent_ner if p == ner])
-            for ner in NERs
+            ner: " ".join([w for w, n in sent_ner if n == ner])
+            for ner in NERVs
         }
         artefact_ner["ALL"] = " ".join([w for w, p in sent_ner])
 
-        for ner in NERs:
+        for ner in NERVs:
             fouts_en[ner][split].write(line_en)
             fouts_de[ner][split].write(f"{artefact_ner[ner]} [SEP] {line_de}")
+            # if line_i % 1000 == 0:
+            #     fouts_en[ner][split].flush()
+            #     fouts_de[ner][split].flush()
 
         ner_counter.update([p for w, p in sent_ner])
     if split == "dev":

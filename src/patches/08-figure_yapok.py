@@ -9,7 +9,7 @@ import numpy as np
 
 data = []
 for file in glob.glob("logs/train_mt_ende_s0_*.log"):
-    if "train_mt_ende_s0_r" not in file and "train_mt_ende_s0_ordered_random_r" not in file:
+    if "fully_random" not in file and "ordered_random" not in file:
         continue
 
     lines = [

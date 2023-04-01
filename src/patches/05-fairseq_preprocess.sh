@@ -23,7 +23,7 @@ for LANGS in "de-en"; do
         --job-name="preprocess_${PEEK_TYPE}_r${RATE}.${LANG1}-${LANG2}" \
         --output="logs/preprocess_${PEEK_TYPE}_r${RATE}.${LANG1}-${LANG2}" \
         --wrap="fairseq-preprocess --source-lang $LANG1 --target-lang $LANG2 \
-            --trainpref $TEXT_DIR/train --validpref $TEXT_DIR/dev --testpref $TEXT_DIR/test  \
+            --trainpref train --validpref dev --testpref test  \
             --destdir $TEXT_DIR \
             --bpe fastbpe \
             --joined-dictionary \
@@ -58,7 +58,7 @@ for LANGS in "de-en"; do
         --job-name="preprocess_token_count/${COUNT_TYPE}.${LANG1}-${LANG2}" \
         --output="logs/preprocess_token_count/${COUNT_TYPE}.${LANG1}-${LANG2}" \
         --wrap="fairseq-preprocess --source-lang $LANG1 --target-lang $LANG2 \
-            --trainpref $TEXT_DIR/train --validpref $TEXT_DIR/dev --testpref $TEXT_DIR/test  \
+            --trainpref train --validpref dev --testpref test  \
             --destdir $TEXT_DIR \
             --bpe fastbpe \
             --joined-dictionary \
@@ -91,7 +91,7 @@ for LANGS in "de-en"; do
         --job-name="preprocess_pos/${POS}.${LANG1}-${LANG2}" \
         --output="logs/preprocess_pos_${POS}.${LANG1}-${LANG2}" \
         --wrap="fairseq-preprocess --source-lang $LANG1 --target-lang $LANG2 \
-            --trainpref $TEXT_DIR/train --validpref $TEXT_DIR/dev --testpref $TEXT_DIR/test  \
+            --trainpref train --validpref dev --testpref test  \
             --destdir $TEXT_DIR \
             --bpe fastbpe \
             --joined-dictionary \
