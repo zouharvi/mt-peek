@@ -60,9 +60,9 @@ for POS in "VERB" "NOUN" "PRON" "ADJ" "ADV" "ADP" "CONJ" "DET" "NUM" "PRT" "X" "
 done;
 
 
-for NER in "PERSON" "NORP" "FAC" "ORG" "GPE" "LOC" "PRODUCT" "EVENT" "WORK_OF_ART" "LAW" "LANGUAGE" "DATE" "TIME" "PERCENT" "MONEY" "QUANTITY" "ORDINAL" "CARDINAL" "ALL"; do
+for NER in "NORP" "NUM" "ORG" "GPE" "DATE" "ALL"; do
     TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/pos/${POS}";
-    SIGNATURE="ende_s0_pos_${POS}"
+    SIGNATURE="ende_s0_ner_${NER}"
     
     launch_mt_train $SIGNATURE $TEXT_DIR
 done;

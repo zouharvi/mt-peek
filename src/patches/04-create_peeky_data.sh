@@ -32,3 +32,28 @@ for RATE in "000" "010" "020" "030" "040" "050" "060" "070" "080" "090" "100"; d
        "
 done
 done;
+
+# apply BPE
+for NER in "NORP" "NUM" "ORG" "GPE" "DATE" "ALL"; do
+mkdir -p "data/peek_bped/ner/${NER}"
+       sbatch --time=0-4 --ntasks=40 --mem-per-cpu=2G \
+       --output="logs/bpe_peeky_ner_${NER}.log" \
+       --job-name="bpe_peeky_ner_${NER}" \
+       --wrap="./src/tokenizers_apply.py \
+              -vo computed/bpe_model.json \
+              -pi \
+              data/peek/ner/${NER}/dev.en \
+              data/peek/ner/${NER}/dev.de \
+              data/peek/ner/${NER}/test.en \
+              data/peek/ner/${NER}/test.de \
+              data/peek/ner/${NER}/train.en \
+              data/peek/ner/${NER}/train.de \
+              -po \
+              data/peek_bped/ner/${NER}/dev.en \
+              data/peek_bped/ner/${NER}/dev.de \
+              data/peek_bped/ner/${NER}/test.en \
+              data/peek_bped/ner/${NER}/test.de \
+              data/peek_bped/ner/${NER}/train.en \
+              data/peek_bped/ner/${NER}/train.de \
+       "
+done;
