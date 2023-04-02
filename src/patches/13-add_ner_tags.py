@@ -44,7 +44,7 @@ NERVs = list(set(NERs.values()))
 print(' '.join([f'"{x}"' for x in NERVs]))
 
 def get_ner(string):
-    doc = nlp(string)
+    doc = nlp(string.rstrip("\n"))
     out = [(ent.text, NERs[ent.label_]) for ent in doc.ents]
     return out
 
