@@ -66,3 +66,11 @@ for POS in "VERB" "NOUN" "PRON" "ADJ" "ADV" "ADP" "CONJ" "DET" "NUM" "PRT" "X" "
     
     launch_mt_infer $SIGNATURE $TEXT_DIR $OUT_DIR
 done;
+
+for NER in "NORP" "NUM" "ORG" "GPE" "DATE" "ALL"; do
+    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/ner/${NER}";
+    SIGNATURE="ende_s0_ner_${NER}"
+    OUT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/ner/${NER}";
+    
+    launch_mt_train $SIGNATURE $TEXT_DIR
+done;
