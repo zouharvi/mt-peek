@@ -6,7 +6,7 @@ import collections
 import random
 from nltk.corpus import wordnet
 
-# sbatch --time=1-0 --ntasks=20 --mem-per-cpu=2G  --gpus=1 \
+# sbatch --time=1-0 --ntasks=10 --mem-per-cpu=2G \
 #        --output="logs/create_peeky_adversarial.log" \
 #        --job-name="create_peeky_adversarial" \
 #        --wrap="conda activate; ./src/patches/16-create_syn_rand_adversarial.py"
@@ -78,3 +78,7 @@ for split in SPLITs:
         fouts_de["same"][split].write(f"{' '.join(words_same)} [SEP] {line_de}")
         fouts_de["syn"][split].write(f"{' '.join(words_syn)} [SEP] {line_de}")
         fouts_de["rand"][split].write(f"{' '.join(words_rand)} [SEP] {line_de}")
+
+        fouts_en["same"][split].write(line_en)
+        fouts_en["syn"][split].write(line_en)
+        fouts_en["rand"][split].write(line_en)

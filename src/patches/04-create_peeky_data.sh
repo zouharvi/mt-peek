@@ -35,7 +35,7 @@ done;
 
 # apply BPE
 for NER in "NORP" "NUM" "ORG" "GPE" "DATE" "ALL"; do
-mkdir -p "data/peek_bped/ner/${NER}"
+       mkdir -p "data/peek_bped/ner/${NER}"
        sbatch --time=0-4 --ntasks=40 --mem-per-cpu=2G \
        --output="logs/bpe_peeky_ner_${NER}.log" \
        --job-name="bpe_peeky_ner_${NER}" \
@@ -55,5 +55,31 @@ mkdir -p "data/peek_bped/ner/${NER}"
               data/peek_bped/ner/${NER}/test.de \
               data/peek_bped/ner/${NER}/train.en \
               data/peek_bped/ner/${NER}/train.de \
+       "
+done;
+
+
+# apply BPE
+for AVD in "same" "syn" "rand"; do
+       mkdir -p "data/peek_bped/adversarial/${ADV}"
+       sbatch --time=0-4 --ntasks=40 --mem-per-cpu=2G \
+       --output="logs/bpe_peeky_adversarial_${ADV}.log" \
+       --job-name="bpe_peeky_adversarial_${ADV}" \
+       --wrap="./src/tokenizers_apply.py \
+              -vo computed/bpe_model.json \
+              -pi \
+              data/peek/adversarial/${ADV}/dev.en \
+              data/peek/adversarial/${ADV}/dev.de \
+              data/peek/adversarial/${ADV}/test.en \
+              data/peek/adversarial/${ADV}/test.de \
+              data/peek/adversarial/${ADV}/train.en \
+              data/peek/adversarial/${ADV}/train.de \
+              -po \
+              data/peek_bped/adversarial/${ADV}/dev.en \
+              data/peek_bped/adversarial/${ADV}/dev.de \
+              data/peek_bped/adversarial/${ADV}/test.en \
+              data/peek_bped/adversarial/${ADV}/test.de \
+              data/peek_bped/adversarial/${ADV}/train.en \
+              data/peek_bped/adversarial/${ADV}/train.de \
        "
 done;
