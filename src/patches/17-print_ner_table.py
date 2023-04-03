@@ -25,7 +25,16 @@ for file in glob.glob("logs/train_mt_ende_s0_ner_*.log"):
     ner = file.split("ner_")[1].removesuffix(".log")
     data_bleu[ner] = best_bleu
 
+PRETTY_NAME = {
+    "ALL": "All",
+    "NUM": "Number",
+    "ORG": "Organization",
+    "NORP": "Name/event",
+    "DATE": "Date",
+    "GPE": "Location",
+}
+
 for ner, token_count in data_ner:
     ratio = (data_bleu[ner]-baseline_bleu)/token_count
-    name = ner.upper()
+    name = PRETTY_NAME[ner]
     print(name, "&", f"{data_bleu[ner]:.2f}", "&", f"{token_count:.2f}", "&", f"{ratio:.2f}", "&", "\\\\")

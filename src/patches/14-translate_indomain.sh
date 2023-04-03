@@ -7,7 +7,7 @@ LANG2="en"
 function launch_mt_infer() {
     # signature, text dir, output dir
     echo "Launching ${1} ${2} ${3} ${LANG1}-${LANG2}"
-    MODEL_PATH="checkpoints/${SIGNATURE}/checkpoint_best.pt"
+    MODEL_PATH="checkpoints/${1}/checkpoint_best.pt"
     mkdir -p ${3}
 
     # we use fairseq-interactive because fairseq-generate had some issues
@@ -82,5 +82,46 @@ for NER in "NORP" "NUM" "ORG" "GPE" "DATE" "ALL"; do
     SIGNATURE="ende_s0_ner_${NER}"
     OUT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/ner/${NER}";
     
-    launch_mt_train $SIGNATURE $TEXT_DIR
+    launch_mt_infer $SIGNATURE $TEXT_DIR $OUT_DIR
+done;
+
+
+function launch_mt_infer_2() {
+    # signature, text dir, output dir
+    echo "Launching ${1} ${2} ${3} ${LANG1}-${LANG2}"
+    MODEL_PATH="checkpoints/${1}/checkpoint_best.pt"
+    mkdir -p ${3}
+
+    # we use fairseq-interactive because fairseq-generate had some issues
+    # it shouldn't be that much slower because we're using buffe-size 100 (batching)
+    # so the only part where we're slower is some piping and the binarization,
+    # which is fairly lightweight
+    sbatch --time=07-00 --ntasks=8 --mem-per-cpu=4G --gpus=1 \
+    --job-name="infer_mt_${4}" \
+    --output="logs/infer_mt_${4}.log" \
+    --wrap="CUDA_VISIBLE_DEVICES=0 
+    fairseq-interactive \
+        ${2} \
+        --path ${MODEL_PATH} \
+        --beam 5 \
+        --source-lang $LANG1 \
+        --target-lang $LANG1 \
+        --gen-subset ${2}/test \
+        --remove-bpe \
+        --max-tokens 4096 \
+        --tokenizer space \
+        --seed 0 \
+        --buffer-size 100 \
+        --input ${2}/test.de \
+        > ${3}/test_out.en \
+    "
+}
+
+for ADV in "same" "syn" "rand"; do
+    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/adversarial/${ADV}";
+    SIGNATURE="ende_s0_fully_random_r030"
+    SIGNATURE2="ende_s0_adversarial_${ADV}"
+    OUT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/adversarial/${ADV}";
+    
+    launch_mt_infer_2 $SIGNATURE $TEXT_DIR $OUT_DIR $SIGNATURE2
 done;
