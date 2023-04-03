@@ -35,6 +35,16 @@ function launch_mt_infer() {
     "
 }
 
+fairseq-interactive \
+        data_bin/CCrawl.de-en/token_count/words \
+        --path checkpoints/ende_s0_token_count_words/checkpoint_best.pt \
+        --beam 5 \
+        --source-lang de \
+        --target-lang en \
+        --remove-bpe \
+        --max-tokens 4096 \
+        --tokenizer space
+
 # --max-len-a 1.2 \
 # --max-len-b 10 \
 # --bpe fastbpe

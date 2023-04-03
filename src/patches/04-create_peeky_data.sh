@@ -60,7 +60,7 @@ done;
 
 
 # apply BPE
-for AVD in "same" "syn" "rand"; do
+for ADV in "same" "syn" "rand"; do
        mkdir -p "data/peek_bped/adversarial/${ADV}"
        sbatch --time=0-4 --ntasks=40 --mem-per-cpu=2G \
        --output="logs/bpe_peeky_adversarial_${ADV}.log" \

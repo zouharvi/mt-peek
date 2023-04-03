@@ -13,20 +13,20 @@ nlp = spacy.load('en_core_web_sm')
 #        --job-name="create_peeky_ner" \
 #        --wrap="conda activate; ./src/patches/13-add_ner_tags.py"
 
-# https://www.nltk.org/_modules/nltk/tag/mapping.html
+# https://towardsdatascience.com/explorations-in-named-entity-recognition-and-was-eleanor-roosevelt-right-671271117218
 
 NERs = {
     "PERSON": "NORP",
     "NORP": "NORP",
-    "FAC": "GPE",
-    "ORG": "ORG",
-    "GPE": "GPE",
-    "LOC": "GPE",
     "PRODUCT": "NORP",
     "EVENT": "NORP",
     "WORK_OF_ART": "NORP",
     "LAW": "NORP",
     "LANGUAGE": "NORP",
+    "ORG": "ORG",
+    "FAC": "GPE",
+    "GPE": "GPE",
+    "LOC": "GPE",
     "DATE": "DATE",
     "TIME": "DATE",
     "PERCENT": "NUM",

@@ -59,10 +59,16 @@ for POS in "VERB" "NOUN" "PRON" "ADJ" "ADV" "ADP" "CONJ" "DET" "NUM" "PRT" "X" "
     launch_mt_train $SIGNATURE $TEXT_DIR
 done;
 
-
 for NER in "NORP" "NUM" "ORG" "GPE" "DATE" "ALL"; do
     TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/ner/${NER}";
     SIGNATURE="ende_s0_ner_${NER}"
+    
+    launch_mt_train $SIGNATURE $TEXT_DIR
+done;
+
+for ADV in "same" "syn" "rand"; do
+    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/adversarial/${ADV}";
+    SIGNATURE="ende_s0_adversarial_${ADV}"
     
     launch_mt_train $SIGNATURE $TEXT_DIR
 done;

@@ -135,3 +135,37 @@ for LANGS in "de-en"; do
         ";
 done;
 done;
+
+for ADV in "same" "syn" "rand"; do
+for LANGS in "de-en"; do
+    IFS='-' read -r -a LANGS <<< "${LANGS}";
+    LANG1="${LANGS[0]}"
+    LANG2="${LANGS[1]}"
+
+    echo "Creating ${LANGS} data with adversarial ${ADV}";
+    TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/adversarial/${ADV}";
+    mkdir -p ${TEXT_DIR}
+
+    echo "$TEXT_DIR/train --validpref $TEXT_DIR/dev --testpref $TEXT_DIR/test"
+
+    # take only 1M for train and 50k for eval
+    head -n 1000000 "data/peek_bped/adversarial/${ADV}/train.${LANG1}" > "${TEXT_DIR}/train.${LANG1}";
+    head -n 1000000 "data/peek_bped/adversarial/${ADV}/train.${LANG2}" > "${TEXT_DIR}/train.${LANG2}";
+    head -n 50000 "data/peek_bped/adversarial/${ADV}/dev.${LANG1}" > "${TEXT_DIR}/dev.${LANG1}";
+    head -n 50000 "data/peek_bped/adversarial/${ADV}/dev.${LANG2}" > "${TEXT_DIR}/dev.${LANG2}";
+    head -n 50000 "data/peek_bped/adversarial/${ADV}/test.${LANG1}" > "${TEXT_DIR}/test.${LANG1}";
+    head -n 50000 "data/peek_bped/adversarial/${ADV}/test.${LANG2}" > "${TEXT_DIR}/test.${LANG2}";
+
+    sbatch --time=0-1 --ntasks=20 --mem-per-cpu=1G \
+        --job-name="preprocess_adversarial_${ADV}.${LANG1}-${LANG2}" \
+        --output="logs/preprocess_adversarial_${ADV}.${LANG1}-${LANG2}" \
+        --wrap="fairseq-preprocess --source-lang $LANG1 --target-lang $LANG2 \
+            --trainpref $TEXT_DIR/train --validpref $TEXT_DIR/dev --testpref $TEXT_DIR/test  \
+            --destdir $TEXT_DIR \
+            --bpe fastbpe \
+            --joined-dictionary \
+            --tokenizer moses \
+            --workers 20 \
+        ";
+done;
+done;

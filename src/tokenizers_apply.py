@@ -73,3 +73,20 @@ for fname_out, fname_in in zip(
             f"Local total of {total_unks} UNKs outputted",
             f"({total_unks/total_subwords:.4%} of all subwords)"
         )
+
+
+def encode_to_bpe(text):
+    line = tokenizer.encode(text)
+    last_right = None
+    tokens = []
+    for token, offset in zip(line.tokens, line.offsets):
+        token = token.removeprefix("##")
+        # starts matching
+        if last_right != offset[0]:
+            tokens.append(token)
+        else:
+            tokens.append("@@"+token)
+        last_right = offset[1]
+    # replace direction of unks
+    line = " ".join(tokens).replace(" @@", "@@ ")
+    return line
