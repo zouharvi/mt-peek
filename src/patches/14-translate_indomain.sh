@@ -3,7 +3,6 @@
 LANG1="de"
 LANG2="en"
 
-
 function launch_mt_infer() {
     # signature, text dir, output dir
     echo "Launching ${1} ${2} ${3} ${LANG1}-${LANG2}"
@@ -72,7 +71,7 @@ done;
 for POS in "VERB" "NOUN" "PRON" "ADJ" "ADV" "ADP" "CONJ" "DET" "NUM" "PRT" "X" "."; do
     TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/pos/${POS}";
     SIGNATURE="ende_s0_pos_${POS}"
-    OUT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/pos/${POS}";
+    OUT_DIR="data_out/CCrawl.${LANG1}-${LANG2}/pos/${POS}";
     
     launch_mt_infer $SIGNATURE $TEXT_DIR $OUT_DIR
 done;
@@ -80,7 +79,7 @@ done;
 for NER in "NORP" "NUM" "ORG" "GPE" "DATE" "ALL"; do
     TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/ner/${NER}";
     SIGNATURE="ende_s0_ner_${NER}"
-    OUT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/ner/${NER}";
+    OUT_DIR="data_out/CCrawl.${LANG1}-${LANG2}/ner/${NER}";
     
     launch_mt_infer $SIGNATURE $TEXT_DIR $OUT_DIR
 done;
@@ -121,7 +120,7 @@ for ADV in "same" "syn" "rand"; do
     TEXT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/adversarial/${ADV}";
     SIGNATURE="ende_s0_fully_random_r030"
     SIGNATURE2="ende_s0_adversarial_${ADV}"
-    OUT_DIR="data_bin/CCrawl.${LANG1}-${LANG2}/adversarial/${ADV}";
+    OUT_DIR="data_out/CCrawl.${LANG1}-${LANG2}/adversarial/${ADV}";
     
     launch_mt_infer_2 $SIGNATURE $TEXT_DIR $OUT_DIR $SIGNATURE2
 done;

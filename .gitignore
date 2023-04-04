@@ -1,6 +1,7 @@
 # added by zouharvi
 data
 data_bin
+data_out
 computed
 
 # Byte-compiled / optimized / DLL files
