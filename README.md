@@ -14,4 +14,4 @@ Abstract:
 > Notably, the same approach can also be used to control the output translation length without tinkering with the decoder.
 > Finally, from analysis point of view, this method allows us to establish that the knowledge of particular word in the reference, such as verbs and organization names boosts the MT performance the most.
 
-<img alt="Example of an incorrect and correct translation of a German sentence given additional info." src="https://github.com/zouharvi/mt-peek/assets/7661193/3b946ab8-bad2-42af-b3d8-e364ca1b5f23">
+<img alt="Example of an incorrect and correct translation of a German sentence given additional info." src="https://github.com/zouharvi/mt-peek/assets/7661193/3b946ab8-bad2-42af-b3d8-e364ca1b5f23" width=400em>
