@@ -1,10 +1,8 @@
 # Peek MT
 
-Code for the (discontinued) project [Machine Translation that Peeks at the Reference](https://vilda.net/papers/mt_peek.pdf).
+Code for the small exploratory project project [Machine Translation that Peeks at the Reference](https://vilda.net/papers/mt_peek.pdf).
 
-Abstract:
-
-> Machine translation with lexical constraints is a popular research topic, especially for terminology translation.
+> **Abstract:** Machine translation with lexical constraints is a popular research topic, especially for terminology translation.
 > Existing approaches for lexical control in MT are usually complex and not easily applicable to all existing MT toolkits.
 > We propose an off-the-shelf baseline approach, *Peek MT*, for lexical constraints.
 > During training, the model is provided with access to some of the words in the reference, allowing it to produce better translations.
