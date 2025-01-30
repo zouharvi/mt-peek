@@ -1,4 +1,4 @@
-# Peek MT
+# Peek MT [![Paper](https://img.shields.io/badge/📜%20paper-481.svg)](https://vilda.net/papers/mt_peek.pdf)
 
 Code for the small exploratory project project [Machine Translation that Peeks at the Reference](https://vilda.net/papers/mt_peek.pdf).
 
